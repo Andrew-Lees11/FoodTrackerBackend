@@ -1,6 +1,11 @@
 # Retrieving and Deleting Meals from the FoodServer
 The current implementation of the [Kitura FoodServer](README.md) has support for retrieving all of the stored Meals using a `GET` request on `/meals`, but the FoodTracker app is currently only saving the Meals to the FoodServer.
 
+### Pre-Requisites:
+This tutorial follows on from the FoodTracker Application and server created by following the [FoodTrackerBackend](https://github.com/IBM/FoodTrackerBackend) tutorial. If you have completed the FoodTracker Backend there are no further pre-requisites.
+
+If you have not completed the [FoodTrackerBackend](https://github.com/IBM/FoodTrackerBackend) tutorial go to the [CompletedFoodTracker](https://github.com/IBM/FoodTrackerBackend/tree/CompletedFoodTracker) branch and follow the README instructions.
+
 ### Retrieving Meals from the FoodServer  
 The following code can be added to the FoodTracker app and will query the saved Meals from the server, and update the TableView:  
 ```swift
