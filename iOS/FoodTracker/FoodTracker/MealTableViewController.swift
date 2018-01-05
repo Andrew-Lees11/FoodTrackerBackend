@@ -8,8 +8,7 @@
 
 import UIKit
 import os.log
-// UNCOMMENT TO USE SWIFT BACKEND SERVER
-//import KituraKit
+import KituraKit
 
 class MealTableViewController: UITableViewController {
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -188,11 +187,9 @@ class MealTableViewController: UITableViewController {
     }
     
     private func saveMeals() {
-        /* // UNCOMMENT TO USE SWIFT BACKEND SERVER
         for meal in meals {
             saveToServer(meal: meal)
         }
-        */
         do {
             let data = try PropertyListEncoder().encode(meals)
             let isSuccessfulSave  = NSKeyedArchiver.archiveRootObject(data, toFile: MealTableViewController.ArchiveURL.path)
@@ -221,7 +218,6 @@ class MealTableViewController: UITableViewController {
      * Provide a function that calls the ServerMealAPI.serverMealCreate() API. The code is taken from
      * the documentation of the generated FoodTracker connector SDK.
      */
-     /* // UNCOMMENT TO USE SWIFT BACKEND SERVER
      private func saveToServer(meal: Meal) {
          guard let client = KituraKit(baseURL: "http://localhost:8080") else {
              print("Error creating KituraKit client")
@@ -235,6 +231,6 @@ class MealTableViewController: UITableViewController {
          print("Saving meal to Kitura succeeded")
          }
      }
-     */
+ 
 
 }
