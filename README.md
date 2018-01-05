@@ -10,7 +10,7 @@
 </a>
 </p>
 
-This branch is a completed version of the "Building a FoodTracker Backend with Kitura" tutorial, which adds a [Kitura Swift backend](http://kitura.io) to the [FoodTracker iOS app tutorial](https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/) from Apple. This can be used as a starting point for any of the next steps of the tutorial.
+This branch is a completed version of the "Building a FoodTracker Backend with Kitura" tutorial, which adds a [Kitura Swift backend](http://kitura.io) to the [FoodTracker iOS app tutorial](https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/) from Apple. This can be used as a starting point for any of the [next steps](#next-steps) of the tutorial.
 
 
 ## FoodTracker Setup:
