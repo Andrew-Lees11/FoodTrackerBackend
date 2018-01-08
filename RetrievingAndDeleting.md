@@ -43,7 +43,7 @@ Support for deleting Meals from the FoodServer can be added by adding a REST API
 ```  
 With the following handler implementation:  
 ```swift
-    func deleteHandler(id: String, completion: (RequestError?) -> Void ) -> Void {
+    func deleteHandler(id: String, completion: (RequestError?) -> Void ) {
         print("Deleting \(id) from mealStore")
         mealStore[id] = nil
         completion(nil)

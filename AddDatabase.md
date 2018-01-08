@@ -126,12 +126,12 @@ below the line `let meals = Meals()`
 
 2. Add the `@escaping` keyword to the completion closure in the `storeHandler`  signatures.
 ```swift
-func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) -> Void {
+func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) {
 ```
 
 3. Add the `@escaping` keyword to the completion closure in the `loadHandler`  signatures.
 ```swift
-func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) -> Void {
+func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) {
 ```
 
 Allowing the completion closure to be escaping means the database queries can be asynchronous.
@@ -174,7 +174,7 @@ completion(meal, nil)
 ```
 4. Your completed `storeHandler` function should now look as follows:
 ```swift
-func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) -> Void {
+func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) {
     connection.connect() { error in
         if error != nil {return}
         else {
@@ -232,11 +232,11 @@ if let resultSet = queryResult.asResultSet {
 5. For each row, create a `Meal` object from the table and add it to your temporary mealstore:
 ```swift
 // Process rows
-guard let name = row[0], let nameString = name as? String else{return}
-guard let photo = row[1], let photoString = photo as? String else{return}
+guard let name = row[0], let nameString = name as? String else {return}
+guard let photo = row[1], let photoString = photo as? String else {return}
 guard let photoData = photoString.data(using: .utf8) else {return}
-guard let rating = row[2], let ratingInt = Int(String(describing: rating)) else{return}
-guard let currentMeal = Meal(name: nameString, photo: photoData, rating: ratingInt)
+guard let rating = row[2], let ratingInt = Int(String(describing: rating)) else {return}
+guard let currentMeal = Meal(name: nameString, photo: photoData, rating: ratingInt) else {return}
 tempMealStore.append(currentMeal)
 ```
 In this example, we have parsed the cells from each row to be the correct type to create a meal object.
@@ -249,7 +249,7 @@ completion(tempMealStore, nil)
 
 7. Your completed `loadHander` function should now look as follows:
 ```swift
-func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) -> Void {
+func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) {
     connection.connect() { error in
         if error != nil {return}
         else {
@@ -264,7 +264,7 @@ func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) -> Voi
                         guard let photo = row[1], let photoString = photo as? String else{return}
                         guard let photoData = photoString.data(using: .utf8) else {return}
                         guard let rating = row[2], let ratingInt = Int(String(describing: rating)) else{return}
-                        guard let currentMeal = Meal(name: nameString, photo: photoData, rating: ratingInt)
+                        guard let currentMeal = Meal(name: nameString, photo: photoData, rating: ratingInt) else{return}
                         tempMealStore.append(currentMeal)
                     }
                 }
