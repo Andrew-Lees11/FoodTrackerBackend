@@ -170,7 +170,10 @@ class MealTableViewController: UITableViewController {
     private func loadSampleMeals() {
         
         print("loading sample meals")
-
+        let photo1 = UIImageJPEGRepresentation(UIImage(named: "meal1")!, 1)
+        let photo2 = UIImageJPEGRepresentation(UIImage(named: "meal2")!, 1)
+        let photo3 = UIImageJPEGRepresentation(UIImage(named: "meal3")!, 1)
+        
         guard let meal1 = Meal(name: "Caprese Salad", photo: photo1!, rating: 4) else {
             fatalError("Unable to instantiate meal1")
         }

@@ -25,11 +25,6 @@ struct Meal: Codable {
             return nil
         }
         
-        //The calories must be positive
-        guard (calories >= 0) else {
-            return nil
-        }
-        
         
         // Initialization should fail if there is no name or if the rating is negative.
         if name.isEmpty || rating < 0  {
