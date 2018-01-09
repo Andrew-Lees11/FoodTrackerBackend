@@ -54,7 +54,7 @@ open FoodServer.xcodeproj/
 
 Now when you press play, Xcode will start your FoodTracker server listening on port 8080. You can see this by going to [http://localhost:8080/](http://localhost:8080/ ) which will show the default Kitura landing page.
 
-To test the application and server are working, you can add a meal inside the application and go to [http://localhost:8080/meals](http://localhost:8080/meals). The server will display the name, the encoded image and the rating of the meals in your app.
+To test the application and server are working, add a meal inside the application and go to [http://localhost:8080/meals](http://localhost:8080/meals). The server will display the name, the encoded image and the rating of the meals in your app.
 
 ## Next Steps
 From this completed Foodtracker, the following tasks can be completed to update your application.
@@ -73,3 +73,6 @@ The following steps describe how to start to [Build a FoodTracker Web Applicatio
 In order for a real iOS app to connect to a Kitura Server, it needs to be hosted at a public URL that the iOS app can reach.
 
 Kitura is deployable to any cloud, but the project created with `kitura init` provides additonal files so that it is pre-configured for clouds that support any of Cloud Foundry, Docker or Kubernetes. The follow contains the steps to take the Kitura FoodServer and [Deploy to the IBM Cloud using Cloud Foundry](DeployToCloud.md)
+
+### View a sample Todo list application using Kitura
+This tutorial takes you through the basics of creating a Kitura server. To see a completed Todo list application with demonstrations of all HTTP requests go to [iOSSampleKituraKit](https://github.com/IBM-Swift/iOSSampleKituraKit)
