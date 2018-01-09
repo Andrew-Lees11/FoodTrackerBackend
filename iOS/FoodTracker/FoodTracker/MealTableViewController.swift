@@ -64,7 +64,6 @@ class MealTableViewController: UITableViewController {
         
         cell.nameLabel.text = meal.name
         cell.photoImageView.image = UIImage(data: meal.photo)
-        cell.caloriesLabel.text = String(meal.calories) + " Calories"
         cell.ratingControl.rating = meal.rating
         
         return cell
@@ -171,19 +170,20 @@ class MealTableViewController: UITableViewController {
     private func loadSampleMeals() {
         
         print("loading sample meals")
+
+        guard let meal1 = Meal(name: "Caprese Salad", photo: photo1!, rating: 4) else {
+            fatalError("Unable to instantiate meal1")
+        }
         
-        let photo1 = UIImageJPEGRepresentation(UIImage(named: "festiveMeal1")!, 1)
-        let photo2 = UIImageJPEGRepresentation(UIImage(named: "festiveMeal2")!, 1)
-
-        guard let meal1 = Meal(name: "Baked Camembert and Cranberry Snowflake (half)", photo: photo1!, calories: 447, rating: 4) else {
-            fatalError("Unable to instantiate festiveMeal1")
+        guard let meal2 = Meal(name: "Chicken and Potatoes", photo: photo2!, rating: 5) else {
+            fatalError("Unable to instantiate meal2")
+        }
+        
+        guard let meal3 = Meal(name: "Pasta with Meatballs", photo: photo3!, rating: 3) else {
+            fatalError("Unable to instantiate meal2")
         }
 
-        guard let meal2 = Meal(name: "Leftovers Pie (quarter)", photo: photo2!, calories: 652, rating: 5) else {
-            fatalError("Unable to instantiate festiveMeal2")
-        }
-
-        meals += [meal1, meal2]
+        meals += [meal1, meal2, meal3]
     }
     
     private func saveMeals() {
