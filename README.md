@@ -65,6 +65,9 @@ The current implementation of the Kitura FoodServer is storing the meals in a lo
 ### Add Support for Retrieving and Deleting Meals from the FoodServer
 The current implementation of the Kitura FoodServer has support for retrieving all of the stored Meals using a `GET` request on `/meals`, but the FoodTracker app is currently only saving the Meals to the FoodServer. The following contains the steps to add [Retrieving and Deleting Meals from the FoodServer](RetrievingAndDeleting.md)
 
+### Add a Website Frontend using the Stencil Template Engine
+The current implementation of the Kitura FoodServer returns a JSON array of the meals. To create a website, you would want to use html to structure the page. The following contains steps to embed the meal data into html and [add a Website Frontend using the Stencil Template Engine](StencilFrontend.md)
+
 ### Add a Web Application to the Kitura server
 Now that the Meals from the FoodTracker app are being stored on a server, it becomes possible to start building a web application that also provides users with access to the stored Meal data.
 The following steps describe how to start to [Build a FoodTracker Web Application](AddWebApplication.md)
