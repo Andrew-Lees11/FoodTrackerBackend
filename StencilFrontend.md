@@ -89,7 +89,7 @@ Now when you press play, Xcode will start your FoodTracker server listening on p
 ```swift
 import KituraStencil
 ```
-3. Add the template engine to the router
+3. Add the template engine to the router:
 Inside the `postInit()` function, insert the following line, below `router.get("/meals", handler: loadHandler)`.
 ```swift
 router.add(templateEngine: StencilTemplateEngine())
@@ -100,14 +100,14 @@ The router will now use a `StencilTemplateEngine()` for rendering templates. you
 ### Adding a route for the template
 We will define a new route for our server which we will use to return the formatted html. This is done using Kitura 1 style routing with request, response and next. We will render the .stencil file and add this to the response.
 
-1. Add a Kitura 1 style route for "/foodtracker"
+1. Add a Kitura 1 style route for "/foodtracker":
 Add the following code beneath `router.add(templateEngine: StencilTemplateEngine())`
 ```swift
-router.get(“/foodtracker") { request, response, next in
+router.get("/foodtracker") { request, response, next in
 next()
 }
 ```
-2. Build a JSON string description of the FoodTracker mealstore
+2. Build a JSON string description of the FoodTracker mealstore:
 Add the following code inside your “/foodtracker" route above `next()`
 ```swift
 let meals: [Meal] = self.mealStore.map({ $0.value })
@@ -116,7 +116,7 @@ for meal in meals {
     allMeals["meals"]?.append(["name": meal.name, "rating": meal.rating])
 }
 ```
-3. Render the template and add it to your response
+3. Render the template and add it to your response:
 Add the following line above `next()`
 ```swift
 try response.render("FoodTemplate.stencil", context: allMeals).end()
@@ -138,7 +138,7 @@ router.get("/foodtracker") { request, response, next in
 We can test this route by running the FoodTracker application and the FoodServer. Add a meal in the app and then go to [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). This will now display a line saying how many meals are present in the app and a list of the meal names and ratings.
 
 ## Displaying a Photo using a Static File Server
-Our meal tracker application allows users to upload a photograph of their meal. We would like to add this photograph to our webpage as a picture and not as a string of data as it is currently displayed. We will save user photos and then implement a Static File Server which will serve the photos Stencil template.
+Our meal tracker application allows users to upload a photograph of their meal. We would like to add this photograph to our webpage as a picture and not as a string of data as it is currently displayed. We will save user photos and then implement a Static File Server which will serve the photos using the Stencil template.
 
 ### Saving photos on the server
 1. Using terminal, create the "public" directory
@@ -146,7 +146,7 @@ Our meal tracker application allows users to upload a photograph of their meal. 
 cd ~/FoodTrackerBackend/FoodServer
 mkdir public
 ```
-The default location for a static file server is the ./public directory so we will create one in our server as the location for saving our users pictures.
+The default location for a static file server is the ./public directory so we will create one in our server as the location for saving our users' pictures.
 
 2. Open your `Sources > Application > Application.swift` file
 3. Setup the file handler to write to the web hosting directory by adding the following under the mealStore declaration:
@@ -154,13 +154,13 @@ The default location for a static file server is the ./public directory so we wi
 private var fileManager = FileManager.default
 private var rootPath = StaticFileServer().absoluteRootPath
 ```
-4. Save pictures received by the server
+4. Save pictures received by the server:
 Add the following code to your `storehandler` function beneath "mealStore[meal.name] = meal"
 ```swift
 let path = rootPath + "/" + meal.name + ".jpg"
 fileManager.createFile(atPath: path, contents: meal.photo)
 ```
-This will create a file called your meal name with a .jpg extension inside the public directory of your server. If the file already exists it will overwrite it with a new picture. You can test this by adding a meal and then looking in the "public" directory for the photo.
+This will create a file with the name of your meal and a .jpg extension inside the public directory of your server. If the file already exists it will overwrite it with a new picture. You can test this by re-running the FoodServer with your changes and adding a meal - the photo should appear in the "public" directory you just created.
 
 4. your storehandler should now look as follows:
 ```swift
@@ -172,21 +172,21 @@ func storeHandler(meal: Meal, completion: (Meal?, RequestError?) -> Void ) {
 }
 ```
 ### Adding the photos to the Stencil template
-1. Add a static file server route for images
+1. Add a static file server route for images:
 Insert the following line below `router.get("/meals", handler: loadHandler)`
 ```swift
 router.get("/images", middleware: StaticFileServer())
 ```
-2. Open your "FoodTemplate.stencil" file
+2. Open your "FoodTemplate.stencil" file:
 ```
 cd ~/FoodTrackerBackend/FoodServer/Views
 open FoodTemplate.stencil
 ```
-3. Add the following line in your for loop below `- {{ meal.name }} with rating {{ meal.rating }}. <br />`
+3. Add the following line in your `for` loop below the line  `- {{ meal.name }} with rating {{ meal.rating }}. <br />`
 ```
 <img src="images/{{ meal.name }}.jpg" alt="meal image" height="100"> <br />
 ```
-This will make a call to the server for the meal saved and display it.
+This will make a call to the server for the image saved with the meal and display it.
 
 Restart your server to add your new changes. Then add a new meal and view your frontend mealstore at http://localhost:8080/foodtracker. You should see a webpage displaying the total number of meals and a list of the meal names, rating and as well as a picture of the meal.
 Congratulations! You have now taken a meal from the app, set up a Kitura server to receive the data and displayed it embedded in html to a webpage.
