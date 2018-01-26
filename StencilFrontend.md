@@ -34,7 +34,7 @@ mkdir Views
 cd Views
 ```
 3. Create a FoodTemplate.stencil file.
-We will use terminal commands for file creation but you can use a text editor of your choice.
+ We will use terminal commands for file creation but you can use a text editor of your choice.
 ```
 cat > FoodTemplate.stencil
 ```
@@ -57,7 +57,7 @@ When, the above code is rendered it will display the number of meals in your mea
 ### Add Kitura-StencilTemplateEngine dependencies to your server
 [Kitura-TemplateEngine](https://github.com/IBM-Swift/Kitura-TemplateEngine) is a template engine abstraction layer, that works alongside a specific template engine, such as [Kitura-StencilTemplateEngine](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine), to allow a user to easily use a template engine in swift. These two libraries are added to our `Package.swift` file, so the server can access them.
 
-1. Open a new terminal window and go to your servers `Package.swift` file.
+1. In terminal, go to your servers `Package.swift` file.
 ```
 cd ~/FoodTrackerBackend/FoodServer
 open Package.swift
@@ -90,7 +90,7 @@ Now when you press play, Xcode will start your FoodTracker server listening on p
 import KituraStencil
 ```
 3. Add the template engine to the router:
-Inside the `postInit()` function, insert the following line, below `router.get("/meals", handler: loadHandler)`.
+ Inside the `postInit()` function, insert the following line, below `router.get("/meals", handler: loadHandler)`.
 ```swift
 router.add(templateEngine: StencilTemplateEngine())
 ```
@@ -101,14 +101,14 @@ The router will now use a `StencilTemplateEngine()` for rendering templates. you
 We will define a new route for our server which we will use to return the formatted html. This is done using Kitura 1 style routing with request, response and next. We will render the .stencil file and add this to the response.
 
 1. Add a Kitura 1 style GET route for "/foodtracker":
-Add the following code beneath `router.add(templateEngine: StencilTemplateEngine())`
+ Add the following code beneath `router.add(templateEngine: StencilTemplateEngine())`
 ```swift
 router.get("/foodtracker") { request, response, next in
     next()
 }
 ```
 2. Build a JSON string description of the FoodTracker mealstore:
-Add the following code inside your “/foodtracker" route above `next()`
+ Add the following code inside your “/foodtracker" route above `next()`
 ```swift
 let meals: [Meal] = self.mealStore.map({ $0.value })
 var allMeals : [String: [[String:Any]]] = ["meals" : []]
@@ -117,7 +117,7 @@ for meal in meals {
 }
 ```
 3. Render the template and add it to your response:
-Add the following line above `next()`
+ Add the following line above `next()`
 ```swift
 try response.render("FoodTemplate.stencil", context: allMeals).end()
 ```
@@ -149,13 +149,13 @@ mkdir public
 The default location for a static file server is the ./public directory so we will create one in our server as the location for saving our users' pictures.
 
 2. Open your `Sources > Application > Application.swift` file.
-3. Setup the file handler to write to the web hosting directory by adding the following under the mealStore declaration:
+3. Setup the file handler to write to the web hosting directory by adding the following under the `mealStore` declaration:
 ```swift
 private var fileManager = FileManager.default
 private var rootPath = StaticFileServer().absoluteRootPath
 ```
 4. Save pictures received by the server:
-Add the following code to your `storehandler` function beneath "mealStore[meal.name] = meal"
+ Add the following code to your `storehandler` function beneath `mealStore[meal.name] = meal`:
 ```swift
 let path = "\(self.rootPath)/\(meal.name).jpg"
 fileManager.createFile(atPath: path, contents: meal.photo)
@@ -173,7 +173,7 @@ func storeHandler(meal: Meal, completion: (Meal?, RequestError?) -> Void ) {
 ```
 ### Adding the photos to the Stencil template
 1. Add a static file server route for images:
-Insert the following line below `router.get("/meals", handler: loadHandler)`
+ Insert the following line below `router.get("/meals", handler: loadHandler)`
 ```swift
 router.get("/images", middleware: StaticFileServer())
 ```
@@ -196,8 +196,15 @@ The user wants to be able to submit meals from the webpage as well as the app. W
 
 ### Adding a Form to the Webpage
 
-1. Open your "FoodTemplate.stencil" file.
-2. Add the following code below `{% endfor %}`.
+1. In terminal, move to the `Views` directory:
+```
+cd ~/FoodTrackerBackend/FoodServer/Views
+```
+2. Open your `FoodTemplate.stencil` file:
+```
+open FoodTemplate.stencil
+```
+3. Add the following code below `{% endfor %}`:
 ```
 <form action="foodtracker" method="post" enctype="multipart/form-data">
     Name: <input type="text" name="name"><br>
@@ -206,7 +213,7 @@ The user wants to be able to submit meals from the webpage as well as the app. W
     <input type="submit" value="Submit">
 </form>
 ```
-3. Refresh your [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker) to view the form.
+4. Refresh your [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker) to view the form.
 
 This code creates a multipart from with three fields. A "name" text box, a rating slider and a file submission button. When you click submit, this will POST a multipart form to "/foodtracker" with the data from the form.
 
@@ -220,14 +227,14 @@ inside the `postInit()` function add BodyParser to your route
 router.post("/foodtracker", middleware: BodyParser())
 ```
 3. Add a Kitura 1 style POST route for "/foodtracker":
-Add the following code beneath your BodyParser route.
+ Add the following code beneath your BodyParser route.
 ```swift
 router.post("/foodtracker") { request, response, next in
     next()
 }
 ```
 4. Parse the `Request` body with BodyParser.
-Add the following code inside your “/foodtracker" post route above `next()`:
+ Add the following code inside your “/foodtracker" post route above `next()`:
 ```swift
 guard let parsedBody = request.body else {
     next()
@@ -235,7 +242,7 @@ guard let parsedBody = request.body else {
 }
 ```
 5. Split the ParsedBody into a MultiPart array.
-Add the following line after the guard statement:
+ Add the following line after the guard statement:
 ```swift
 let parts = parsedBody.asMultiPart
 ```
@@ -243,18 +250,21 @@ let parts = parsedBody.asMultiPart
 ### Save the MultiPart array as a meal object
 
 1. Parse the MultiPart array as a meal object.
-Insert the following code beneath your `parts` declaration:
+ Insert the following code beneath your `parts` declaration:
 ```swift
 guard let name = parts?[0].body.asText,
     let stringRating = parts?[1].body.asText,
     let rating = Int(stringRating),
     case .raw(let photo)? = parts?[2].body,
-    parts?[2].type == image/jpg
-    else {return}
+    parts?[2].type == "image/jpeg"
+    else {
+        next()
+        return
+    }
 guard let newMeal = Meal(name: name, photo: photo, rating: rating) else {return}
 ```
 2. Save the meal and the photo.
-Insert the following code beneath your `newMeal` declaration:
+ Insert the following code beneath your `newMeal` declaration:
 ```swift
 self.mealStore[newMeal.name] = newMeal
 let path = "\(self.rootPath)/\(newMeal.name).jpg"
@@ -271,6 +281,7 @@ This will reload the page and prevent meals being submitted multiple times.
 4. Your completed `foodtracker` POST route should now look as follows:
 ```swift
 router.post("/foodtracker") { request, response, next in
+    try response.redirect("/foodtracker")
     guard let parsedBody = request.body else {
         next()
         return
@@ -280,13 +291,15 @@ router.post("/foodtracker") { request, response, next in
         let stringRating = parts?[1].body.asText,
         let rating = Int(stringRating),
         case .raw(let photo)? = parts?[2].body,
-        parts?[2].type == image/jpg
-        else {return}
+        parts?[2].type == "image/jpeg"
+        else {
+            next()
+            return
+        }
     guard let newMeal = Meal(name: name, photo: photo, rating: rating) else {return}
     self.mealStore[newMeal.name] = newMeal
     let path = "\(self.rootPath)/\(newMeal.name).jpg"
     self.fileManager.createFile(atPath: path, contents: newMeal.photo)
-    try response.redirect("/foodtracker")
     next()
 }
 ```
@@ -295,7 +308,7 @@ Restart your server to add your new changes. Then add a new meal from at [http:/
 
 ## Adding HTML and CSS
 
-You now have everything needed to make a fully functioning Foodtracker Website hosted on a Kitura Server. Now we just have to make it look better with some more HTML and CSS. We have taken the CSS frontend from [Food Blog Template](https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm) and added our Stencil Templates to produce example.stencil.
+You now have everything needed to make a fully functioning Foodtracker Website hosted on a Kitura Server. Now we just have to make it look better with some more HTML and CSS. As an example, We have taken the CSS template from [Food Blog Template](https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm) and connected the server using Stencil to produce `Example.stencil`.
 
 ### Move Example.Stencil to views folder
 1. Open your teminal window.
@@ -303,20 +316,19 @@ You now have everything needed to make a fully functioning Foodtracker Website h
 ```
 cd ~/FoodTrackerBackend/
 ```
-3. Move Example.Stencil to your Views folder.
+3. Move `Example.Stencil` to your Views folder.
 ```
 mv Example.stencil FoodServer/Views/
 ```
 
 ### Change the target of `Response.render` to display `Example.Stencil`
 
-Replace:
-``` swift
-try response.render("FoodTemplate.stencil", context: allMeals).end()
-```
+1. Open your `Sources > Application > Application.swift` file.
+
+2. Replace `FoodTemplate.stencil` with `Example.stencil` in the `response.render` call:
 ```swift
 try response.render("Example.stencil", context: allMeals).end()
 ```
-Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You will see the added css styling to create your foodTracker Website.
+Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You will see the added css styling to create your FoodTracker Website.
 
 
