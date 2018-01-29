@@ -1,4 +1,4 @@
-# Adding a Website Frontend to Kitura FoodServer with Stencil
+# Adding a Website Front End to Kitura FoodServer with Stencil
 
 <p align="center">
 <img src="https://www.ibm.com/cloud-computing/bluemix/sites/default/files/assets/page/catalog-swift.svg" width="120" alt="Kitura Bird">
@@ -10,19 +10,19 @@
 </a>
 </p>
 
-Now that there is a FoodServer as a backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add a website frontend so that the page displayed by your server is more visually appealing than a JSON array of the meals. The steps below demonstrate how to make your server use a Stencil template to return dynamic html, using [Kitura-TemplateEngine](https://github.com/IBM-Swift/Kitura-TemplateEngine) and [Kitura-StencilTemplateEngine](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine).
+Now that there is a FoodServer as a backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add a website front end so that the page displayed by your server is more visually appealing compared to a JSON array of the meals. The steps below demonstrate how to make your server use a Stencil template to return dynamic HTML, using [Kitura-TemplateEngine](https://github.com/IBM-Swift/Kitura-TemplateEngine) and [Kitura-StencilTemplateEngine](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine).
 
 
 ## Pre-Requisites:
 These instructions follow on from the FoodTracker application and server created by following the [FoodTrackerBackend](https://github.com/IBM/FoodTrackerBackend) tutorial. If you have completed the FoodTracker Backend there are no further pre-requisites.
 
-If you have not completed the [FoodTrackerBackend](https://github.com/IBM/FoodTrackerBackend) tutorial go to the [CompletedFoodTracker](https://github.com/IBM/FoodTrackerBackend/tree/CompletedFoodTracker) branch and follow the README instructions.
+If you have not completed the [FoodTrackerBackend](https://github.com/IBM/FoodTrackerBackend) tutorial go to the [CompletedFoodTracker](https://github.com/IBM/FoodTrackerBackend/tree/CompletedFoodTracker) branch and follow the [README](https://github.com/IBM/FoodTrackerBackend/blob/CompletedFoodTracker/README.md) instructions.
 
 ## Using A Stencil Template
-The Food Tracker application is taken from the Apple tutorial for building your first iOS application. In [FoodTrackerBackend Tutorial](https://github.com/IBM/FoodTrackerBackend), we created a server and connected it to the iOS application. This means created meals are posted to the server and a user can then view these meals on [localhost:8080/meals](http://localhost:8080/meals). When you perform a HTTP GET request to the server, you are returned a JSON array with all your stored meals. To present this data in a more appealing way we will use [Stencil](https://github.com/kylef/Stencil). Stencil is a template language for Swift which allows you to embed code into a html document for a dynamic webpage.
+The Food Tracker application is taken from the Apple tutorial for building your first iOS application. In [FoodTrackerBackend Tutorial](https://github.com/IBM/FoodTrackerBackend), we created a server and connected it to the iOS application. This means created meals are posted to the server and a user can then view these meals on [localhost:8080/meals](http://localhost:8080/meals). When you perform a HTTP GET request to the server, you are returned a JSON array with all your stored meals. To present this data in a more appealing way we will use [Stencil](https://github.com/kylef/Stencil). Stencil is a template language for Swift which allows you to embed code into a HTML document for a dynamic webpage.
 
 ### Create the Stencil File
-To use templates with a Kitura router, you must create a .stencil template file which describes how to embed code into the returned html. By default, Kitura Router gets the template files from the `./Views/` directory in the directory where Kitura runs. You can change the Views directory per Router instance by setting the `Router.viewsPath` variable, but for our tutorial we use the default `Views` folder.
+To use templates with a Kitura router, you must create a .stencil template file which describes how to embed code into the returned HTML. By default, Kitura Router gets the template files from the `./Views/` directory in the directory where Kitura runs. You can change the Views directory per Router instance by setting the `Router.viewsPath` variable, but for our tutorial we use the default `Views` folder.
 
 1. In terminal, move to the FoodServer directory:
 ```
@@ -52,7 +52,10 @@ There are {{ meals.count }} meals. <br />
 {% endfor %}
 </html>
 ```
-When, the above code is rendered it will display the number of meals in your meal store and then loop through the mealstore, displaying the meal name and rating. Stencil will work with html tags such as <br /> for a line break. For more details about Stencil templates see the [Stencil User Guide](http://stencil.fuller.li/en/latest/).
+
+5. Save and exit your text editor. For cat use the shortcut:  `CTRL+D`
+
+When, the above code is rendered it will display the number of meals in your meal store and then loop through the meal store, displaying the meal name and rating. Stencil will work with HTML tags such as `<br />` for a line break. For more details about Stencil templates see the [Stencil User Guide](http://stencil.fuller.li/en/latest/).
 
 
 ### Add Kitura-StencilTemplateEngine dependencies to your server
@@ -97,10 +100,10 @@ Inside the `postInit()` function, insert the following line, below `router.get("
 router.add(templateEngine: StencilTemplateEngine())
 ```
 
-The router will now use a `StencilTemplateEngine()` for rendering templates. you can use multiple template engines in one file and `router.setDefault(templateEngine: StencilTemplateEngine())` can be used to set the default.
+The router will now use a `StencilTemplateEngine()` for rendering templates. You can use multiple template engines in one file and `router.setDefault(templateEngine: StencilTemplateEngine())` can be used to set the default.
 
 ### Adding a route for the template
-We will define a new route for our server which we will use to return the formatted html. This is done using Kitura 1 style routing with request, response and next. We will render the .stencil file and add this to the response.
+We will define a new route for our server which we will use to return the formatted HTML. This is done using Kitura 1 style routing with request, response and next. We will render the .stencil file and add this to the response.
 
 1. Add a Kitura 1 style GET route for "/foodtracker".
 
@@ -110,7 +113,7 @@ router.get("/foodtracker") { request, response, next in
     next()
 }
 ```
-2. Build a JSON string description of the FoodTracker mealstore.
+2. Build a JSON string description of the FoodTracker meal store.
 
 Add the following code inside your “/foodtracker" route above `next()`:
 ```swift
@@ -195,11 +198,11 @@ open FoodTemplate.stencil
 ```
 This will make a call to the server for the image saved with the meal and display it.
 
-Restart your server to add your new changes. Then add a new meal and view your frontend mealstore at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You should see a webpage displaying the total number of meals and a list of the meal names, rating and as well as a picture of the meal.
-Congratulations! You have now taken a meal from the app, set up a Kitura server to receive the data and displayed it embedded in html to a webpage.
+Restart your server to add your new changes. Then add a new meal and view your front end meal store at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You should see a webpage displaying the total number of meals and a list of the meal names, rating and as well as a picture of the meal.
+Congratulations! You have now taken a meal from the app, set up a Kitura server to receive the data and displayed it embedded in HTML to a webpage.
 
 ## Submitting a Meal from the Webpage
-The user wants to be able to submit meals from the webpage as well as the app. We will use a html form to post data to the Kitura server. Then using body parser we will parse the received data to add a meal to our mealstore and display the new meal.
+The user wants to be able to submit meals from the webpage as well as the app. We will use a HTML form to post data to the Kitura server. Then using body parser we will parse the received data to add a meal to our meal store and display the new meal.
 
 ### Adding a Form to the Webpage
 
@@ -277,7 +280,7 @@ else {
 ```
 2. Save the meal and the photo.
 
-Insert the following code after the second else block:
+Insert the following code after the else block:
 ```swift
 self.mealStore[newMeal.name] = newMeal
 let path = "\(self.rootPath)/\(newMeal.name).jpg"
@@ -344,7 +347,8 @@ mv Example.stencil FoodServer/Views/
 ```swift
 try response.render("Example.stencil", context: allMeals).end()
 ```
-Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You will see the added css styling to create your FoodTracker Website.
+3. Restart the server to compile the new route.
 
+Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). Your front end will now have the CSS styling from the [Food Blog Template](https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm) to create a complete food tracker website!
 
-
+Any questions or comments? Please join the vibrant Kitura community on [Slack](http://swift-at-ibm-slack.mybluemix.net/)!
