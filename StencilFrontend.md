@@ -45,10 +45,8 @@ cat > FoodTemplate.stencil
 ```
 <html>
 There are {{ meals.count }} meals. <br />
-
 {% for meal in meals %}
-    - {{ meal.name }} with rating {{ meal.rating }}. <br />
-    <br />
+    - {{ meal.name }} with rating {{ meal.rating }} <br />
 {% endfor %}
 </html>
 ```
@@ -58,7 +56,7 @@ When the above code is rendered, it will display the total number of meals in yo
 
 
 ### Add the Kitura-StencilTemplateEngine dependency
-[Kitura-TemplateEngine](https://github.com/IBM-Swift/Kitura-TemplateEngine) is a template engine abstraction layer which works alongside a specific template engine, such as [Kitura-StencilTemplateEngine](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine), to allow a user to easily use a template engine in Swift. We need to add the `Kitura-StencilTemplateEngine` dependency to our `Package.swift` file.
+[Kitura-StencilTemplateEngine](https://github.com/IBM-Swift/Kitura-StencilTemplateEngine), allows users to easily use Stencil templates in Swift and needs to be added to our `Package.swift` file.
 
 1. In the terminal, go to your server's `Package.swift` file.
 ```
@@ -73,20 +71,10 @@ open Package.swift
 ```swift
 .target(name: "Application", dependencies: [ "Kitura", "Configuration", "CloudEnvironment", "SwiftMetrics", "Health", "KituraStencil"]),
 ```
-
-### Generate your FoodServer Xcode project
-
-Now we have added the dependencies to our `Package.swift` file we can generate our FoodServer Xcode project to make editing the code easier. The FoodServer is a pure Swift project so the following steps could also be achieved by editing the `.swift` files.
-
-1. Generate and open the server Xcode project:
+4. Regenerate your FoodServer Xcode project:
 ```
 swift package generate-xcodeproj
-open FoodServer.xcodeproj/
 ```
-2. Click on the "FoodServer-Package" text on the top-left of the toolbar and select "Edit scheme" from the dropdown menu.
-3. In "Run" click on the "Executable" dropdown, select FoodServer and click Close.
-
-Now, when you press play, Xcode will start your FoodTracker server listening on port 8080. You can see this by going to [http://localhost:8080/](http://localhost:8080/ ) which will show the default Kitura landing page.
 
 ### Add the Stencil template engine
 1. Open your `Sources > Application > Application.swift` file
@@ -101,7 +89,7 @@ Inside the `postInit()` function, insert the following line, below `router.get("
 router.add(templateEngine: StencilTemplateEngine())
 ```
 
-The router will now use a `StencilTemplateEngine()` to render templates. You can use multiple template engines in one file and `router.setDefault(templateEngine: StencilTemplateEngine())` can be used to set the default.
+The router will now use a `StencilTemplateEngine()` to render `.stencil` templates.
 
 ### Adding a route for the template
 Here we define a new route for our server which we will use to return the formatted HTML. This is done using Kitura 1 style (i.e. not Codable) routing with `request`, `response` and `next` parameters. We will render the `.stencil` file and add this to the `response`.
