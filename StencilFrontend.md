@@ -113,7 +113,7 @@ for meal in meals {
 3. Render the template and add it to your `response`.
 Add the following line above `next()`:
 ```swift
-try response.render("FoodTemplate.stencil", context: allMeals).end()
+try response.render("FoodTemplate.stencil", context: allMeals)
 ```
 This will render the `FoodTemplate.stencil` file using `allMeals` to embed variables from the code.
 
@@ -125,7 +125,7 @@ router.get("/foodtracker") { request, response, next in
     for meal in meals {
         allMeals["meals"]?.append(["name": meal.name, "rating": meal.rating])
     }
-    try response.render("FoodTemplate.stencil", context: allMeals).end()
+    try response.render("FoodTemplate.stencil", context: allMeals)
     next()
 }
 ```
@@ -309,11 +309,11 @@ router.post("/foodtracker") { request, response, next in
 }
 ```
 
-Restart your server to add your new changes. Then add a new meal at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). You should see a webpage update with your new meal and a list of the meal names, rating and a picture of the meal.
+Restart your server to add your new changes. When you add a new meal at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker), you should see the webpage update with your new meal.
 
 ## Adding HTML and CSS
 
-You now have everything you need for a fully functioning FoodTracker website which is hosted on a Kitura server. Now we're going improve the presentation using CSS and some more HTML. As an example, we have taken the CSS template from [Food Blog Template](https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm) and connected it to our server using Stencil to produce `Example.stencil`.
+We have provided some basic html and css in a file called `Example.stencil`. To improve the presentation of the webpage, We will replace serve this template instead of `FoodTemplate.stencil`.
 
 ### Move `Example.Stencil` to the Views folder
 1. Open your terminal window.
@@ -332,10 +332,10 @@ mv Example.stencil FoodServer/Views/
 
 2. Replace `FoodTemplate.stencil` with `Example.stencil` in the `response.render` call:
 ```swift
-try response.render("Example.stencil", context: allMeals).end()
+try response.render("Example.stencil", context: allMeals)
 ```
 3. Restart the server to compile the new route.
 
-Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). Your front end will now have the CSS styling from the [Food Blog Template](https://www.w3schools.com/w3css/tryw3css_templates_food_blog.htm) to create a complete food tracker website!
+Now view your webpage at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). Your front end will have CSS styling to create a complete food tracker website!
 
 Any questions or comments? Please join the Kitura community on [Slack](http://swift-at-ibm-slack.mybluemix.net/)!
