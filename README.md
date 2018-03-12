@@ -10,7 +10,7 @@
 </a>
 </p>
 
-This branch is a completed version of the "Building a FoodTracker Backend with Kitura" tutorial, which adds a [Kitura Swift backend](http://kitura.io) to the [FoodTracker iOS app tutorial](https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/) from Apple. This can be used as a starting point for any of the [next steps](#next-steps) of the tutorial.
+This branch is an old completed version of the "Building a FoodTracker Backend with Kitura" tutorial, which adds a [Kitura Swift backend](http://kitura.io) to the [FoodTracker iOS app tutorial](https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/) from Apple. It is intended to be used as a starting point for [Adding a Database to FoodTracker Server with Swift-Kuery](AddDatabase.md) without using the [ORM](https://github.com/IBM-Swift/Swift-Kuery-ORM).
 
 
 ## FoodTracker Setup:
@@ -27,10 +27,10 @@ Follow the steps below to set up your completed iOS Foodtracker and Kitura serve
 
 `git clone https://github.com/IBM/FoodTrackerBackend.git`
 
-4. Switch to the "completedFoodBackend" branch:
+4. Switch to the "rawDatabaseTutorial" branch:
 ```
 cd FoodTrackerBackend
-git checkout CompletedFoodTracker
+git checkout rawDatabaseTutorial
 ```
 5. Use Cocoapods to install app dependencies:
 ```
