@@ -150,6 +150,9 @@ router.get("/foodtracker") { request, response, next in
 ```
 We can test this route by running the FoodTracker application and the FoodServer. Add a meal in the app and then go to [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker). This will now display a line saying how many meals are present in the app and a list of the meal names and ratings.
 
+### Congratulations, you have successfully served a dynamic HTML webpage!
+The next sections will take you through saving and displaying the meal photograph, receiving new meals from a web form and adding css to the webpage.
+
 ## Displaying a Photo using a Static File Server
 Our meal tracker application allows users to upload a photograph of their meal. We would like to add this photograph to our web page as a picture and not as a string of data as it is currently displayed. To achieve this we will save the user photos and then implement a Static File Server which will serve the photos using our Stencil template.
 
