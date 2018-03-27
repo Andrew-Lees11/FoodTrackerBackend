@@ -99,16 +99,16 @@ Here we define a new route for our server which we will use to return the format
 Add the following code on the line below `router.add(templateEngine: StencilTemplateEngine())`:
 ```swift
 router.get("/foodtracker") { request, response, next in
-    defer {
-        next()
-    }
+    next()
 }
 ```
 2. Build a JSON string description of the FoodTracker meal store.
-Add the following code inside your “/foodtracker" route Below the defer closure:
+Add the following code inside your “/foodtracker" route above `next()`:
+
 ```swift
 Meal.findAll { (result: [Meal]?, error: RequestError?) in
     guard let meals = result else {
+        next()
         return
     }
     var allMeals: [String: [[String:Any]]] = ["meals" :[]]
@@ -118,7 +118,7 @@ Meal.findAll { (result: [Meal]?, error: RequestError?) in
 }
 ```
 3. Render the template and add it to your `response`.
-Add the following line after the `for meal in meals` loop:
+Add the following line above `next()`:
 ```swift
 do {
     try response.render("FoodTemplate.stencil", context: allMeals)
@@ -133,10 +133,8 @@ This will render the `FoodTemplate.stencil` file using `allMeals` to embed varia
 ```swift
 router.get("/foodtracker") { request, response, next in
     Meal.findAll { (result: [Meal]?, error: RequestError?) in
-        defer {
-            next()
-        }
         guard let meals = result else {
+            next()
             return
         }
         var allMeals: [String: [[String:Any]]] = ["meals" :[]]
@@ -148,6 +146,7 @@ router.get("/foodtracker") { request, response, next in
         } catch let error {
             response.send(json: ["Error": error.localizedDescription])
         }
+        next()
     }
 }
 ```
