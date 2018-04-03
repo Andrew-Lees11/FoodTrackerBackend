@@ -108,6 +108,7 @@ Add the following code inside your “/foodtracker" route above `next()`:
 ```swift
 Meal.findAll { (result: [Meal]?, error: RequestError?) in
     guard let meals = result else {
+        next()
         return
     }
     var allMeals: [String: [[String:Any]]] = ["meals" :[]]
@@ -133,6 +134,7 @@ This will render the `FoodTemplate.stencil` file using `allMeals` to embed varia
 router.get("/foodtracker") { request, response, next in
     Meal.findAll { (result: [Meal]?, error: RequestError?) in
         guard let meals = result else {
+            next()
             return
         }
         var allMeals: [String: [[String:Any]]] = ["meals" :[]]
@@ -333,7 +335,6 @@ router.post("/foodtracker") { request, response, next in
 	 }
 }
 ```
-
 Restart your server to add your new changes. When you add a new meal at [http://localhost:8080/foodtracker](http://localhost:8080/foodtracker), you should see the webpage update with your new meal. Since the requests are Asyc, you may need to refresh the webpage to see the new meal.
 
 ## Adding HTML and CSS

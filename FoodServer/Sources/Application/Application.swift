@@ -13,6 +13,7 @@ public let health = Health()
 extension Meal: Model {
     static var idColumnName = "name"
 }
+
 class Persistence {
     static func setUp() {
         let pool = PostgreSQLConnection.createPool(host: "localhost", port: 5432, options: [.databaseName("FoodDatabase")], poolOptions: ConnectionPoolOptions(initialCapacity: 10, maxCapacity: 50, timeout: 10000))
@@ -44,11 +45,11 @@ public class App {
     }
     
     func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) {
-    meal.save(completion)
+        meal.save(completion)
     }
     
     func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) {
-    Meal.findAll(completion)
+        Meal.findAll(completion)
     }
     
     func summaryHandler(completion: @escaping (Summary?, RequestError?) -> Void ) {

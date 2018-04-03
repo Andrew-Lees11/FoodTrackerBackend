@@ -44,6 +44,7 @@ The `Dockerfile` defines the specification of the default docker image for runni
 The `Dockerfile-tools` is a docker specification file similar to the `Dockerfile`, except it includes the tools required for compiling the application. This image can be used to compile the application.
 
 Details on how to build the docker images, compile and run the application within the docker image can be found in the [Run section](#run) below.
+
 #### IBM Cloud deployment
 Your application has a set of cloud deployment configuration files defined to support deploying your application to IBM Cloud:
 * `manifest.yml`
