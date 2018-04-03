@@ -154,7 +154,7 @@ Add the following as another function in the App class:
 ```swift
     func summaryHandler(completion: (Summary?, RequestError?) -> Void ) {
        let summary: Summary = Summary(self.mealStore)
-       completion(summaries, nil)
+       completion(summary, nil)
     }
 ```
 ### 4. Test the newly created REST API
@@ -212,7 +212,7 @@ This should now return a single entry array containing the Meal that was stored 
 6. Test the GET REST API for the summary route is returning just the name and rating.
 View the summary route by going to [http://localhost:8080/summary](http://localhost:8080/summary). This will perform a GET request to your server and should display:
 ```
-[{"name":"test", "rating":1}]
+{"summary":[{"name":"test","rating":1}]}
 ```
 ## Connect FoodTracker to the Kitura FoodServer
 
@@ -342,7 +342,7 @@ createdb FoodDatabase
 
 2. Open a new terminal window and go to your `Package.swift` file.
 ```
-cd FoodTrackerBackend/FoodServer
+cd ~/FoodTrackerBackend/FoodServer
 open Package.swift
 ```
 3. Add the Swift-Kuery-ORM and Swift-Kuery-PostgreSQL packages.
@@ -357,15 +357,12 @@ below the line `.package(url: "https://github.com/IBM-Swift/Health.git", from: "
 .target(name: "Application", dependencies: [ "Kitura","CloudEnvironment","SwiftMetrics","Health", "SwiftKueryORM", "SwiftKueryPostgreSQL"]),
 ```
 
-### Regenerate your FoodServer Xcode project
+5. Regenerate the server Xcode project:
 Now we have added the dependencies to our `Package.swift` file we need to regenerate our FoodServer Xcode project to link the Swift package changes in Xcode.
-
-1. Regenerate the server Xcode project:
 ```
 swift package generate-xcodeproj
 open FoodServer.xcodeproj/
 ```
-2. In the top left corner of Xcode you should a small terminal icon with the text "FoodServer-Package" next to it. Click this icon and then click "FoodServer" from the dropdown menu.
 
 ### Making Meal a Model
 To work with the ORM, the struct Meal needs to implement the Model.
@@ -431,7 +428,7 @@ static func setUp() {
 ```
 **Note** We use a connection pool since we have concurrent requests.
 
-3. Go to the `postInit` function below the line `router.get("/meals", handler: loadHandler)` and call your setup function, and create a table sync for your `Meal` object:
+3. Go to the `postInit` function below the line `router.get("/summary", handler: summaryHandler)` and call your setup function, and create a table sync for your `Meal` object:
 
 ```swift
 Persistence.setUp()
@@ -477,11 +474,12 @@ func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Vo
 ```
 You can verify this by:
 
-Starting the FoodTracker application in Xcode.
-Creating a meal in the application.
-Go to your terminal.
-Accessing your database: psql FoodDatabase
-Viewing your meals table: SELECT name, rating FROM meals;
+1. Starting the FoodTracker application in Xcode.
+2. Creating a meal in the application.
+3. Accessing your database:
+`psql FoodDatabase`
+4. Viewing your meals table:
+`SELECT name, rating FROM meals;`
 This should produce a table with the name and the rating of your newly added meal.
 **NOTE** We do not print out the photo because it is too large
 
@@ -510,7 +508,7 @@ Update the summaryHandler function to get the meals from the database:
 ```swift
 Meal.findAll { meals, error in
     if let meals = meals {
-        completion(Summary(meals)), nil)
+        completion(Summary(meals), nil)
     }
 }
 ```
@@ -520,7 +518,7 @@ Meal.findAll { meals, error in
 func summaryHandler(completion: @escaping ([Summary]?, RequestError?) -> Void ) {
     Meal.findAll { meals, error in
         if let meals = meals {
-            completion(Summary(meals)), nil)
+            completion(Summary(meals), nil)
         }
     }
 }

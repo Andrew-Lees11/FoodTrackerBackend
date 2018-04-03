@@ -53,7 +53,10 @@ struct Summary: Codable {
             self.rating = meal.rating
         }
     }
-
+    
+    init(_ meals: [String: Meal]) {
+        summary = meals.map({ NoPhotoMeal($0.value) })
+    }
     init(_ meals: [Meal]) {
         summary = meals.map({ NoPhotoMeal($0) })
     }
