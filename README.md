@@ -145,7 +145,7 @@ Add the following as another function in the App class:
 
 A GET request to this route will display pages of data representing the photo, which is not very human readable. To solve this, we will make a new route which only returns the meal name and rating.
 
-5. Register a handler for a `GET` request on `/summary` that loads the data  
+5. Register a handler for a `GET` request on `/summary` that loads the data.  
 Add the following into the `postInit()` function:  
 ```swift
 	router.get("/summary", handler: summaryHandler)
