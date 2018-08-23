@@ -1,4 +1,4 @@
-# Adding a Basic authentication to Kitura FoodServer
+# Adding Basic authentication to Kitura FoodServer
 
 <p align="center">
 <img src="https://www.ibm.com/cloud-computing/bluemix/sites/default/files/assets/page/catalog-swift.svg" width="120" alt="Kitura Bird">
@@ -10,7 +10,7 @@
 </a>
 </p>
 
-Now that there is a FoodServer backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add HTTP basic authentication to the routes. This will allow your users to log in and have the server respond with data intended just for them.
+Now that there is a FoodServer backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add HTTP basic authentication to the routes. This will allow your users to log in, have the server identify then and respond accordingly.
 
 
 ## Pre-Requisites:
@@ -36,7 +36,7 @@ open Package.swift
 ```
 2. Add the `Kitura-CredentialsHTTP` package:
 ```swift
-.package(url: "https://github.com/IBM-Swift/Kitura-CredentialsHTTP", from: "2.1.0")
+.package(url: "https://github.com/IBM-Swift/Kitura-CredentialsHTTP", from: "2.1.0"),
 ```
 3. Change the target for Application to include "CredentialsHTTP":
 ```swift
@@ -50,31 +50,38 @@ swift package generate-xcodeproj
 ### Create the TypeSafeHTTPBasic struct
 
 We will declare a struct which conforms to `TypeSafeHTTPBasic`. This will be initialized when our route is successfully authenticated and we will be able to access the authenticated user's id within our Codable route.
-1. At the bottom of `Application.swift`, define a public struct called `MyBasicAuth` that conforms to the `TypeSafeHTTPBasic` protocol:
-```swift
-    public struct MyBasicAuth: TypeSafeHTTPBasic {
-
-    }
+1. Open the FoodServer Xcode project
 ```
-2. Xcode should display the message:
+open FoodServer.xcodeproj/
+```
+2. Inside Sources > Application > Application.swift add `CredentialsHTTP` to your imports:
+```swift
+import CredentialsHTTP
+```
+
+Below the `Persistence` Class, define a public struct called `MyBasicAuth` that conforms to the `TypeSafeHTTPBasic` protocol:
+```swift
+public struct MyBasicAuth: TypeSafeHTTPBasic {
+
+}
+```
+3. Xcode should display the message:
 ```
 Type 'MyBasicAuth' does not conform to protocol 'TypeSafeCredentials'
 ```
-Click "Fix" to autogenerate the stubs and produce the struct below:
+Click "Fix" to autogenerate the stubs below:
 ```swift
-public struct MyBasicAuth: TypeSafeHTTPBasic {
-    public static func verifyPassword(username: String, password: String, callback: @escaping (MyBasicAuth?) -> Void) {
+public static func verifyPassword(username: String, password: String, callback: @escaping (MyBasicAuth?) -> Void) {
 
-    }
-
-    public var id: String
 }
+
+public var id: String
 ```
-3. Inside MyBasicAuth, add an authentication dictionary:
+4. Inside `MyBasicAuth`, add an authentication dictionary:
 ```swift
-public static let authenticate = [username: password]
+public static let authenticate = ["username": "password"]
 ```
-4. The function, `verifyPassword`, takes a username and password and, on success, returns a `MyBasicAuth` instance. We want to check if the password matches the user's stored password. On successful match, we initialize `MyBasicAuth` with an `id` equal to username.
+5. The function, `verifyPassword`, takes a username and password and, on success, returns a `MyBasicAuth` instance. We want to check if the password matches the user's stored password. On successful match, we initialize `MyBasicAuth` with an `id` equal to username.
 ```swift
 if let storedPassword = authenticate[username], storedPassword == password {
     callback(MyBasicAuth(id: username))
@@ -118,7 +125,7 @@ Add `auth: MyBasicAuth` to the completion closure in the summaryHandler signatur
 func summaryHandler(auth: MyBasicAuth, completion: @escaping (Summary?, RequestError?) -> Void ) {
 ```
 
-These routes now require basic authentication to use. You can test this by going to [http://localhost:8080/summary](http://localhost:8080/summary).  
+These routes now require basic authentication to use. You can test this by running the server and going to [http://localhost:8080/summary](http://localhost:8080/summary).  
 The request will be rejected as unauthorized and your browser will offer a window for you to input the username and password.  
 Enter "username" and "password" to be allowed to view the route or any other combination to have the request rejected.  
 The browser will store correct credentials so use a private window if you want to test rejected credentials.
@@ -135,7 +142,7 @@ cd ~/FoodTrackerBackend/iOS/FoodTracker/
 open FoodTracker.xcworkspace
 ```
 2. Open the FoodTracker > MealTableViewController.swift file
-3. Add default credentials to be used by the client:
+3. Add default credentials inside the `saveToServer` function to be used by the client:
 ```swift
 client.defaultCredentials = HTTPBasic(username: "username", password: "password")
 ```
