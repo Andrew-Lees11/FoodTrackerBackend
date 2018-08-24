@@ -10,7 +10,7 @@
 </a>
 </p>
 
-Now that there is a FoodServer backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add HTTP basic authentication to the routes. This will allow your users to log in, have the server identify then and respond accordingly.
+Now that there is a FoodServer backend for the [FoodTracker](https://github.com/IBM/FoodTrackerBackend) app, you can add HTTP basic authentication to the routes. This will allow your users to log in, have the server identify them and respond accordingly.
 
 
 ## Pre-Requisites:
@@ -54,7 +54,7 @@ We will declare a struct which conforms to `TypeSafeHTTPBasic`. This will be ini
 ```
 open FoodServer.xcodeproj/
 ```
-2. Inside Sources > Application > Application.swift add `CredentialsHTTP` to your imports:
+2. Inside `Sources > Application > Application.swift` add `CredentialsHTTP` to your imports:
 ```swift
 import CredentialsHTTP
 ```
@@ -89,7 +89,8 @@ if let storedPassword = authenticate[username], storedPassword == password {
 }
 callback(nil)
 ```
-This function is asyc, so that you can perform asyc actions to verify the password, e.g. looking up the username and password in a database. You must call the callback closure with either an instance of 'Self' or 'nil' before exiting 'verifyPassword'. If you do not, the server will not know to continue and you will recieve a 503 "Service Unavailable" error, when you call the route.  
+This function is async, so that you can perform async actions to verify the password, e.g. looking up the username and password in a database. You must call the callback closure with either an instance of 'Self' or 'nil' before exiting 'verifyPassword'. If you do not, the server will not know to continue and you will receive a 503 "Service Unavailable" error, when you call the route.  
+
 Your complete struct should now look as follows:
 ```swift
 public struct MyBasicAuth: TypeSafeHTTPBasic {
@@ -110,38 +111,41 @@ public struct MyBasicAuth: TypeSafeHTTPBasic {
 
 ### Adding Basic Auth to the routes
 
-`MyBasicAuth` is a Type-safe middleware and can be registered to a Codable routes by adding it to the handler signature.
+`MyBasicAuth` is a Type-safe middleware and can be registered to a Codable route by adding it to the handler signature.
 
-Add `auth: MyBasicAuth` to the completion closure in the storeHandler signatures.
+Add `auth: MyBasicAuth` to the completion closure in the storeHandler signature.
 ```swift
 func storeHandler(auth: MyBasicAuth, meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) {
 ```
-Add `auth: MyBasicAuth` to the completion closure in the loadHandler signatures.
+Add `auth: MyBasicAuth` to the completion closure in the loadHandler signature.
 ```swift
 func loadHandler(auth: MyBasicAuth, completion: @escaping ([Meal]?, RequestError?) -> Void ) {
 ```
-Add `auth: MyBasicAuth` to the completion closure in the summaryHandler signatures.
+Add `auth: MyBasicAuth` to the completion closure in the summaryHandler signature.
 ```swift
 func summaryHandler(auth: MyBasicAuth, completion: @escaping (Summary?, RequestError?) -> Void ) {
 ```
 
 These routes now require basic authentication to use. You can test this by running the server and going to [http://localhost:8080/summary](http://localhost:8080/summary).  
+
 The request will be rejected as unauthorized and your browser will offer a window for you to input the username and password.  
+
 Enter "username" and "password" to be allowed to view the route or any other combination to have the request rejected.  
+
 The browser will store correct credentials so use a private window if you want to test rejected credentials.
 
-Congratulations!!! you have just added HTTP basic authentication to your Kitura server.
+Congratulations!!! You have just added HTTP basic authentication to your Kitura server.
 
 ### Sending Credentials from KituraKit
 
 You now need to send the username and password from KituraKit so that your client can still connect to your protected routes.
 
-1. open the FoodTracker workspace:
+1. Open the FoodTracker workspace:
 ```
 cd ~/FoodTrackerBackend/iOS/FoodTracker/  
 open FoodTracker.xcworkspace
 ```
-2. Open the FoodTracker > MealTableViewController.swift file
+2. Open the `FoodTracker > MealTableViewController.swift` file
 3. Add default credentials inside the `saveToServer` function to be used by the client:
 ```swift
 client.defaultCredentials = HTTPBasic(username: "username", password: "password")
@@ -154,4 +158,4 @@ client.post("/meals", data: meal, credentials: HTTPBasic(username: "username", p
 ```
 However that is not required for this example.  
 
-Now when you run your Foodtracker and server, They will be able to send and receive requests using basic authentication.
+Now your Foodtracker app and server will be able to send and receive requests using basic authentication!
