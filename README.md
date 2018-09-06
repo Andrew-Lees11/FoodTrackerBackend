@@ -162,7 +162,7 @@ Add the following as another function in the App class:
 
 
 1. Run the server project in Xcode
-    1. In the top left corner of Xcode you should a small toolbox icon with the text "FoodServer-Package" next to it. Click this icon and then click "FoodServer" from the dropdown menu.
+    1. In the top left corner of Xcode you should see a small toolbox icon with the text "FoodServer-Package" next to it. Click this icon and then click "FoodServer" from the dropdown menu.
     2. Press the Run button or use the ⌘+R key shortcut.
     3. Select "Allow incoming network connections" if you are prompted.
 
@@ -547,7 +547,7 @@ Now that the Meals from the FoodTracker app are being stored on a server, it bec
 The following steps describe how to start to [Build a FoodTracker Web Application](AddWebApplication.md).
 
 ### Add HTTP Basic authentication to the Kitura server
-The current implementation of the Kitura FoodServer will allow anyone to request all the meals. We can add HTTP Basic authentication to make the routes require a username and password. This allows you to authenticate a user and have the  server respond accordingly. 
+The current implementation of the Kitura FoodServer will allow anyone to request all the meals. We can add HTTP Basic authentication to make the routes require a username and password. This allows you to authenticate a user and have the  server respond accordingly.
 
 ### Deploy and host the Kitura FoodServer in the Cloud
 In order for a real iOS app to connect to a Kitura Server, it needs to be hosted at a public URL that the iOS app can reach.

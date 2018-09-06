@@ -126,7 +126,7 @@ Add `auth: MyBasicAuth` to the completion closure in the summaryHandler signatur
 func summaryHandler(auth: MyBasicAuth, completion: @escaping (Summary?, RequestError?) -> Void ) {
 ```
 
-These routes now require basic authentication to use. You can test this by running the server and going to [http://localhost:8080/summary](http://localhost:8080/summary).  
+These routes now require basic authentication. You can test this by running the server and going to [http://localhost:8080/summary](http://localhost:8080/summary).  
 
 The request will be rejected as unauthorized and your browser will offer a window for you to input the username and password.  
 
@@ -136,9 +136,9 @@ The browser will store correct credentials so use a private window if you want t
 
 Congratulations!!! You have just added HTTP basic authentication to your Kitura server.
 
-### Sending Credentials from KituraKit
+### Sending credentials from your mobile app
 
-You now need to send the username and password from KituraKit so that your client can still connect to your protected routes.
+You need to enable your food tracker mobile application to send the username and password so that it can continue to connect to your now protected routes. You can do this by setting the default credentials on the KituraKit client as shown below.
 
 1. Open the FoodTracker workspace:
 ```
