@@ -44,7 +44,7 @@ If you would like to jump straight to one of these next steps a completed versio
    ```
 
 ## Getting Started
-### 1. Run the Food Tracker App:
+### Run the Food Tracker App:
 The Food Tracker application is taken from the Apple tutorial for building your first iOS application. It allows you to store names, photos and ratings for  "meals". The meals are then stored onto the device using `NSKeyedArchiver`. The following shows you how to see the application running.
 
 1. Change into the iOS app directory:  
@@ -144,8 +144,9 @@ Add the following as another function in the App class:
     }
 ```
 
-A GET request to this route you will display pages of data representing the photo, which is not very human readable. To solve this, we will make a new route which only returns the meal name and rating.
-5. Register a handler for a `GET` request on `/summary` that loads the data  
+A GET request to this route will display pages of data representing the photo, which is not very human readable. To solve this, we will make a new route which only returns the meal name and rating.
+
+5. Register a handler for a `GET` request on `/summary` that loads the data.  
 Add the following into the `postInit()` function:  
 ```swift
 	router.get("/summary", handler: summaryHandler)
@@ -442,17 +443,17 @@ do {
 
 Before we start using the PostgreSQL Database, we need to create a table in the database. Add the following:
 
-2. Add the `@escaping` keyword to the completion closure in the `storeHandler`  signatures.
+4. Add the `@escaping` keyword to the completion closure in the `storeHandler`  signatures.
 ```swift
 func storeHandler(meal: Meal, completion: @escaping (Meal?, RequestError?) -> Void ) {
 ```
 
-3. Add the `@escaping` keyword to the completion closure in the `loadHandler`  signatures.
+5. Add the `@escaping` keyword to the completion closure in the `loadHandler`  signatures.
 ```swift
 func loadHandler(completion: @escaping ([Meal]?, RequestError?) -> Void ) {
 ```
 
-4. Add the `@escaping` keyword to the completion closure in the `summaryHandler`  signatures.
+6. Add the `@escaping` keyword to the completion closure in the `summaryHandler`  signatures.
 ```swift
 func summaryHandler(completion: @escaping (Summary?, RequestError?) -> Void ) {
 ```
@@ -482,6 +483,7 @@ You can verify this by:
 4. Viewing your meals table:
 `SELECT name, rating FROM "Meals";`
 This should produce a table with the name and the rating of your newly added meal.
+
 **NOTE** We do not print out the photo because it is too large
 5. Close `psql` by entering `\q`
 Now when you create a meal in the application, the server will save it to the PostgreSQL database.
